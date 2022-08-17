@@ -3,7 +3,8 @@ package com.worms308.cinemachallenge.restriction
 import com.worms308.cinemachallenge.restriction.dto.FilmRestrictionsDto
 import java.util.*
 
-internal class FilmRestrictionFacade(
+//we can make this facade 'public' or available by API - public will be okay in this case
+class FilmRestrictionFacade internal constructor(
     private val filmRestrictionRepository: FilmRestrictionRepository
 ) {
 
