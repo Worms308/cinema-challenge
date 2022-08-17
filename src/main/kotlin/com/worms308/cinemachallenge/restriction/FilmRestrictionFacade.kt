@@ -12,6 +12,11 @@ internal class FilmRestrictionFacade(
         return restrictions?.toDto() ?: noRestrictionsResponse(filmId)
     }
 
+    fun createRestriction(filmRestrictionDto: FilmRestrictionsDto) {
+        //here can be added some kind of validation but there is no time to add it now
+        filmRestrictionRepository.save(FilmRestrictions(filmRestrictionDto))
+    }
+
     private fun noRestrictionsResponse(filmId: UUID) = FilmRestrictionsDto(
         filmId,
         emptyList()
