@@ -7,7 +7,7 @@ data class RoomAvailabilityDto(
     val cinemaRoomId: UUID,
     val film: FilmDto,
     val showStartAt: LocalDateTime,
-    val customCleaningBreakValue: Int?
+    val customCleaningBreakValue: Int? = null
 ) {
     data class FilmDto(
         val filmId: UUID,
