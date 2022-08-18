@@ -8,6 +8,7 @@ import com.worms308.cinemachallenge.scheduler.dto.ScheduledShowDto
 import com.worms308.cinemachallenge.showcreator.ShowCreator
 import com.worms308.cinemachallenge.showcreator.ShowCreatorConfiguration
 import com.worms308.cinemachallenge.showcreator.dto.ShowCreationPayload
+import com.worms308.cinemachallenge.showcreator.exception.CinemaRoomNotAvailableException
 import spock.lang.Specification
 
 import java.time.LocalDateTime
@@ -58,6 +59,29 @@ class ShowCreatorSpec extends Specification {
             response.showStart == showStart
             response.showEnd == showStart.plusMinutes(restrictedFilmLength)
             response.cleaningBreakEnd == showStart.plusMinutes(restrictedFilmLength + cleaningBreakLength) // normally I'd write it in more clean way
+    }
+
+
+    def "should fail to create film show out of restricted premiere hours"() {
+        given:
+            def showStart = LocalDateTime.of(2022, 8, 18, 10, 0, 0)
+            def roomAvailability = createDefaultRoomAvailability(showStart)
+            def showCreationPayload = new ShowCreationPayload(
+                    restrictedFilmId,
+                    cinemaRoomId,
+                    showStart
+            )
+
+        and:
+            archiveFacade.getFilmDetails(restrictedFilmId) >> createRestrictedFilm() //there should be listed restriction hours but no time for that
+            schedulerFacade.isRoomAvailable(roomAvailability) >> false
+
+        when:
+             showCreator.createShow(showCreationPayload)
+
+        then:
+            def exception = thrown CinemaRoomNotAvailableException
+            exception.message == "Cinema room [$cinemaRoomId] is not available on [$showStart] for [$restrictedFilmLength] minutes"
     }
 
     private ScheduledShowDto createDefaultScheduledShow(LocalDateTime showStart) {
