@@ -7,7 +7,7 @@ import spock.lang.Specification
 
 import java.time.LocalTime
 
-class RestrictionDtoSpec extends Specification {
+class FilmRestrictionSpec extends Specification {
 
     FilmRestrictionFacade filmRestrictionFacade = new FilmRestrictionConfiguration()
             .filmRestrictionFacade()

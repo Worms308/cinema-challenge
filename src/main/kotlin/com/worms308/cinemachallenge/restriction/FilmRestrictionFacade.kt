@@ -15,6 +15,7 @@ class FilmRestrictionFacade internal constructor(
 
     fun createRestriction(filmRestrictionDto: FilmRestrictionsDto) {
         //here can be added some kind of validation but there is no time to add it now
+        //also there could be thrown some kind of validation exception to make it catchable in ControllerAdvice class
         filmRestrictionRepository.save(FilmRestrictions(filmRestrictionDto))
     }
 
